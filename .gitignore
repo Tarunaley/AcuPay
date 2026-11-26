@@ -1,0 +1,16 @@
+## .NET
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+publish/
+TestResults/
+
+## Secrets - never commit
+appsettings.Development.json
+appsettings.Local.json
+*.env
+.env
+secrets.json
