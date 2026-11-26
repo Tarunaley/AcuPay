@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AcuPay - Vendor invoice approvals</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header id="topbar" hidden>
+    <a class="brand" href="#/queue">AcuPay</a>
+    <nav>
+      <a href="#/queue" data-nav="queue">Invoice queue</a>
+      <a href="#/dashboard" data-nav="dashboard">Dashboard</a>
+    </nav>
+    <div class="who"><span id="who-label"></span> <button id="btn-logout" class="link">Sign out</button></div>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" role="alert" hidden></div>
+
+    <!-- Login -->
+    <section id="view-login" hidden>
+      <div class="login-card">
+        <h1>Sign in to AcuPay</h1>
+        <p class="muted">Vendor invoices, matched against purchase orders.</p>
+        <form id="login-form" autocomplete="on">
+          <label>Username <input id="login-username" name="username" autocomplete="username" required></label>
+          <label>Password <input id="login-password" name="password" type="password" autocomplete="current-password" required></label>
+          <button type="submit" class="primary">Sign in</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Queue -->
+    <section id="view-queue" hidden>
+      <div class="page-head">
+        <h1>Invoice queue</h1>
+        <button id="btn-new" class="secondary" data-roles="Requester,Finance">New invoice</button>
+      </div>
+
+      <form id="new-form" class="panel" hidden>
+        <h2>New invoice</h2>
+        <div class="grid">
+          <label>Invoice number <input id="n-number" required maxlength="50"></label>
+          <label>Vendor code <input id="n-vendor" required maxlength="20" placeholder="V001"></label>
+          <label>PO number (optional) <input id="n-po" maxlength="30" placeholder="PO-1001"></label>
+          <label>Amount <input id="n-amount" type="number" step="0.01" min="0.01" required></label>
+          <label>Invoice date <input id="n-date" type="date" required></label>
+        </div>
+        <button type="submit" class="primary">Create invoice</button>
+        <button type="button" id="btn-new-cancel" class="link">Cancel</button>
+      </form>
+
+      <form id="filter-form" class="filters">
+        <label>Status
+          <select id="f-status"><option value="">All</option></select>
+        </label>
+        <label>Vendor code <input id="f-vendor" placeholder="e.g. V001"></label>
+        <button type="submit" class="secondary">Apply filters</button>
+      </form>
+
+      <div class="table-wrap">
+        <table id="queue-table">
+          <thead>
+            <tr><th>Invoice</th><th>Vendor</th><th>PO</th><th class="num">Amount</th><th>Date</th><th>Status</th><th>Match note</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <button id="pg-prev" class="secondary">Previous</button>
+        <span id="pg-label" class="muted"></span>
+        <button id="pg-next" class="secondary">Next</button>
+      </div>
+    </section>
+
+    <!-- Detail -->
+    <section id="view-detail" hidden>
+      <p><a href="#/queue">Back to queue</a></p>
+      <div class="page-head">
+        <h1 id="d-title">Invoice</h1>
+        <span id="d-status" class="badge"></span>
+      </div>
+      <div class="compare">
+        <div class="cell"><span class="k">PO amount</span><span class="v" id="d-po">-</span></div>
+        <div class="cell"><span class="k">Invoice amount</span><span class="v" id="d-inv">-</span></div>
+        <div class="cell"><span class="k">Variance</span><span class="v" id="d-var">-</span></div>
+        <div class="cell"><span class="k">Match note</span><span class="v" id="d-note">-</span></div>
+      </div>
+      <dl class="facts" id="d-facts"></dl>
+
+      <div class="panel" id="d-actions" hidden>
+        <h2>Decision</h2>
+        <label>Reason <textarea id="d-reason" rows="3" maxlength="500" placeholder="Required to reject (10+ characters) and to approve an exception."></textarea></label>
+        <div class="btn-row">
+          <button id="btn-match" class="secondary" data-roles="Requester,Finance">Run match</button>
+          <button id="btn-approve" class="primary" data-roles="Approver,Finance">Approve</button>
+          <button id="btn-reject" class="danger" data-roles="Approver,Finance">Reject</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="view-dashboard" hidden>
+      <h1>Dashboard</h1>
+      <h2>Invoices by status</h2>
+      <div id="status-counts" class="counts"></div>
+      <h2>Approved spend by vendor</h2>
+      <div id="spend-chart"></div>
+    </section>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+</html>
